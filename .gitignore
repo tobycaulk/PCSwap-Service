@@ -1,0 +1,10 @@
+
+*.xml
+
+*.iml
+
+*.class
+
+*.kotlin_module
+
+*.jar

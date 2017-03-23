@@ -1,0 +1,3 @@
+package pcswapservice.model.request.swap
+
+class GetRecentSwapListingsRequest
