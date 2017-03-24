@@ -1,9 +1,10 @@
-package pcswapservice.controller
+package pcswapservice.controller.swap
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import pcswapservice.controller.processRequest
 import pcswapservice.model.request.RequestBase
 import pcswapservice.model.request.swap.*
 import pcswapservice.model.response.swap.*

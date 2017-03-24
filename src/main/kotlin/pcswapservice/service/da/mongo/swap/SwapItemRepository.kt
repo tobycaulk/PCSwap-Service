@@ -1,4 +1,4 @@
-package pcswapservice.service.da.mongo
+package pcswapservice.service.da.mongo.swap
 
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository

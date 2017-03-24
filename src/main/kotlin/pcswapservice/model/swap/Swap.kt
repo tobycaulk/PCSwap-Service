@@ -12,5 +12,6 @@ data class Swap @PersistenceConstructor constructor(
         @JsonProperty("SwapId") var swapId: String,
         @JsonProperty("SellItem") var sellItem: SwapItem,
         @JsonProperty("TradeForItems") var tradeForItems: List<SwapItem>,
+        @JsonProperty("OfferItems") var offerItems: List<SwapItem>?,
         @JsonProperty("SellerUserId") var sellerUserId: String,
         @JsonProperty("CreateDate") val createDate: Date)
