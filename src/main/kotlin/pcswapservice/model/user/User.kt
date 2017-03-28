@@ -12,5 +12,10 @@ data class User(
         @JsonProperty("Rating") var rating: Int,
         @JsonProperty("Username") var username: String,
         @JsonProperty("Email") var email: String,
-        @JsonProperty("Password") var password: String?,
-        @JsonProperty("CreateDate") var createDate: Date)
+        @JsonProperty("Password") var password: String,
+        @JsonProperty("CreateDate") var createDate: Date,
+        @JsonProperty("UserAccountType") var userAccountType: UserAccountType,
+        @JsonProperty("SellSwaps") var sellSwaps: MutableList<String>,
+        @JsonProperty("OfferSwaps") var offerSwaps: MutableList<String>,
+        @JsonProperty("SoldSwaps") var soldSwaps: MutableList<String>,
+        @JsonProperty("BoughtSwaps") var boughtSwaps: MutableList<String>)

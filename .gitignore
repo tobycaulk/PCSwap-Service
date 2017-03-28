@@ -24,3 +24,5 @@ gradle/wrapper/gradle-wrapper.properties
 build/kotlin-build/caches/version.txt
 
 build/resources/main/application.properties
+
+out/production/pcswap-service/application.properties
