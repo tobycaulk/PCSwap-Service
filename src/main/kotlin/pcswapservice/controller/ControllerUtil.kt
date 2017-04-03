@@ -3,13 +3,12 @@ package pcswapservice.controller
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import pcswapservice.model.error.PCSwapError
-import pcswapservice.model.error.getError
-import pcswapservice.model.request.NoSessionPayload
-import pcswapservice.model.request.RequestBase
-import pcswapservice.model.response.ResponseBase
+import pcswapobjects.error.PCSwapError
+import pcswapobjects.error.getError
+import pcswapobjects.request.NoSessionPayload
+import pcswapobjects.request.RequestBase
+import pcswapobjects.response.ResponseBase
 import pcswapservice.service.user.UserService
-import pcswapservice.model.error.PCSwapError.ServiceError
 
 @Component
 class ControllerUtil @Autowired constructor(var userService: UserService) {
@@ -25,11 +24,11 @@ class ControllerUtil @Autowired constructor(var userService: UserService) {
             if(validSession(request.payload, request.sessionId)) {
                 r = serviceFun(request.payload)
             } else {
-                error = getError(ServiceError.INVALID_SESSION)
+                error = getError(PCSwapError.ServiceError.INVALID_SESSION)
             }
         } catch(e: Exception) {
             log.error("Error while processing request", e)
-            error = getError(ServiceError.UNHANDLED_EXCEPTION)
+            error = getError(PCSwapError.ServiceError.UNHANDLED_EXCEPTION)
         }
 
         return ResponseBase(sessionId=request.sessionId, payload=r, error=error)

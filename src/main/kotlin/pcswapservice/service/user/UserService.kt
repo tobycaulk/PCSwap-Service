@@ -2,22 +2,15 @@ package pcswapservice.service.user
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import pcswapservice.model.request.user.CreateUserRequest
-import pcswapservice.model.request.user.UserLoginRequest
-import pcswapservice.model.response.user.CreateUserResponse
-import pcswapservice.model.response.user.CreateUserResponseStatus
-import pcswapservice.model.response.user.UserLoginResponse
-import pcswapservice.model.response.user.UserLoginResponseStatus
-import pcswapservice.model.user.User
-import pcswapservice.model.user.UserAccountType
-import pcswapservice.model.user.UserSession
 import pcswapservice.service.da.mongo.user.UserRepository
 import pcswapservice.service.da.mongo.user.UserSessionRepository
 import pcswapservice.service.utilities.generateUUID
 import pcswapservice.service.utilities.hashPassword
 import pcswapservice.service.utilities.validatePassword
 import java.util.*
-import java.util.concurrent.TimeUnit
+import pcswapobjects.request.user.*
+import pcswapobjects.response.user.*
+import pcswapobjects.user.*
 
 @Service
 class UserService @Autowired constructor(var userRepository: UserRepository, var userSessionRepository: UserSessionRepository) {
@@ -53,7 +46,6 @@ class UserService @Autowired constructor(var userRepository: UserRepository, var
         } else {
             userId = generateUUID()
             var user = User(
-                    id=null,
                     userId=userId,
                     rating=0,
                     username=request.username,
@@ -61,7 +53,7 @@ class UserService @Autowired constructor(var userRepository: UserRepository, var
                     password= hashPassword(request.password),
                     createDate=Date(),
                     userAccountType=UserAccountType.BASIC,
-                    sellSwaps= arrayListOf<String>(),
+                    sellSwaps=arrayListOf<String>(),
                     offerSwaps=arrayListOf<String>(),
                     soldSwaps=arrayListOf<String>(),
                     boughtSwaps=arrayListOf<String>())
@@ -80,7 +72,6 @@ class UserService @Autowired constructor(var userRepository: UserRepository, var
 
         var sessionId = generateUUID()
         var userSession = UserSession(
-                id=null,
                 sessionId=sessionId,
                 userId=userId,
                 createDate=Date(),
@@ -110,5 +101,31 @@ class UserService @Autowired constructor(var userRepository: UserRepository, var
         }
 
         return valid
+    }
+
+    fun getUserSession(request: GetUserSessionRequest) =
+            GetUserSessionResponse(getUserSession(request.sessionId))
+
+    fun getUserSession(sessionId: String): UserSession? =
+            userSessionRepository.findBySessionId(sessionId)
+
+    fun getUser(request: GetUserRequest): GetUserResponse {
+        var user = userRepository.findByUserId(request.userId)
+        if(user != null) {
+            user.password = ""
+        }
+
+        return GetUserResponse(user)
+    }
+
+    fun logout(request: LogoutRequest): LogoutResponse {
+        var status = LogoutResponseStatus.FAILURE
+
+        userSessionRepository.delete(userSessionRepository.findBySessionId(request.sessionId))
+        if(userSessionRepository.findBySessionId(request.sessionId) == null) {
+            status = LogoutResponseStatus.SUCCESS
+        }
+
+        return LogoutResponse(status)
     }
 }

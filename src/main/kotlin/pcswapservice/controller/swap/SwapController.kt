@@ -5,21 +5,25 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import pcswapservice.controller.ControllerUtil
-import pcswapservice.model.request.RequestBase
-import pcswapservice.model.request.swap.*
-import pcswapservice.model.response.swap.*
 import pcswapservice.service.swap.SwapService
+import pcswapobjects.request.swap.*
+import pcswapobjects.response.swap.*
+import pcswapobjects.request.*
 
 @RestController
 class SwapController @Autowired constructor(var swapService: SwapService, var util: ControllerUtil) {
 
     @PostMapping("/createSwap")
     fun createSwap(@RequestBody request: RequestBase<CreateSwapRequest>) =
-            util.processRequest<CreateSwapRequest, CreateSwapResponse>(request, { swapService.createSwap(request.payload) })
+            util.processRequest<CreateSwapRequest, CreateSwapResponse>(request, { swapService.createSwap(request) })
 
     @PostMapping("/getSwap")
     fun getSwap(@RequestBody request: RequestBase<GetSwapRequest>) =
             util.processRequest<GetSwapRequest, GetSwapResponse>(request, { swapService.getSwap(request.payload) })
+
+    @PostMapping("/getSwapItem")
+    fun getSwapItem(@RequestBody request: RequestBase<GetSwapItemRequest>) =
+        util.processRequest<GetSwapItemRequest, GetSwapItemResponse>(request, { swapService.getSwapItem(request.payload) })
 
     @PostMapping("/deleteSwap")
     fun deleteSwap(@RequestBody request: RequestBase<DeleteSwapRequest>) =
@@ -36,4 +40,12 @@ class SwapController @Autowired constructor(var swapService: SwapService, var ut
     @PostMapping("/offerSwapItem")
     fun offerSwapItem(@RequestBody request: RequestBase<OfferSwapItemRequest>) =
         util.processRequest<OfferSwapItemRequest, OfferSwapItemResponse>(request, { swapService.offerSwapItem(request.payload) })
+
+    @PostMapping("/acceptSwapItemOffer")
+    fun acceptSwapItemOffer(@RequestBody request: RequestBase<AcceptSwapItemOfferRequest>) =
+            util.processRequest<AcceptSwapItemOfferRequest, AcceptSwapItemOfferResponse>(request, { swapService.acceptSwapItemOffer(request) })
+
+    @PostMapping("/getTotalSwapCount")
+    fun getTotalSwapCount(@RequestBody request: RequestBase<GetTotalSwapCountRequest>) =
+            util.processRequest<GetTotalSwapCountRequest, GetTotalSwapCountResponse>(request, { swapService.getTotalSwapCount(request.payload) })
 }
